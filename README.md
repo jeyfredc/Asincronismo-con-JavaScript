@@ -10,7 +10,7 @@
 
 [Múltiples Peticiones a un API con Callbacks](#Múltiples-Peticiones-a-un-API-con-Callbacks)
 
-[]()
+[Implementando Promesas](#Implementando-Promesas)
 
 []()
 
@@ -367,3 +367,106 @@ Una recomendacion importante es evitar caer en un callback hell, lo cual es una 
 ![assets/14.png](assets/14.png)
 
 Lo mejor que se puede hacer es tener un maximo de 3 callback y en caso de que se requiera hacer anidacion de mas callback analizar muy bien la situacion ya que no es una buena practica 
+
+## Implementando Promesas
+
+Las promesas utilizan el objeto **promise** para ser ejecutadas y su concepto es como su nombre lo dice, una promesa, quiere decir que algo va a suceder (en el futuro, ahora o nunca). 
+
+Ahora lo que se va hacer es crear codigo para ver como se va a resolver o rechazar segun sea el caso.
+
+En la carpeta **src** crear una carpeta que se llame **promise** y dentro de esta crear un archivo llamado **index.js**
+
+A partir de ahora se utilizara **ES6 (Ecma Script 6)** por lo tanto se utilizara sintaxis proporcionada por ES6
+
+1. Se crea una constante `somethingWillHappen` y se establece un arrow function, dentro de esta se regresa una promesa, su estructura obliga a pasar como parametro `(resolve,reject)` resuelve o rechaza.
+
+2. Se hacen las validacion en el caso que sea verdadero imprime `Hey!`, en el caso que sea falso `Whoops!`
+
+3. Por ultimo se llama a la funcion y con `.then` se captura la respuesta y se imprime por consola, si no la captura con `.then`, captura un error a traves de `catch`
+
+```
+const somethingWillHappen = () => {
+    return new Promise((resolve, reject) => {
+        if(true){
+            resolve('Hey!');
+        }else{
+            reject('Whoops!');
+        }
+    });
+};
+
+somethingWillHappen()
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+```
+
+Si se quiere imprimir por consola `Hey!` la validacion debe configurar en `true`, pero si por el contrario se quiere imprimir por consola `Whoops!` la validacion se debe configurar en `false`
+
+Antes de ejecutar abrir el archivo **package.json** y crear un nuevo script `"promise": "node src/promise/index.js"`, los scripts quedan de esta forma
+
+```
+  "scripts": {
+    "callback": "node src/callback/index.js",
+    "callback:challenge": "node src/callback/challenge.js",
+    "promise": "node src/promise/index.js"
+  },
+```
+
+Ahora ubicados en el proyecto sobre la terminal ejecutar `npm run promise`
+
+![assets/15.png](assets/15.png)
+
+De esta forma el programa resolvio con un `Hey!`
+
+Ahora lo que se va hacer es crear una nueva funcion que involucre un **setTimeout** dentro del mismo archivo para empezar a trabajar con tiempo
+
+1. Se crea una constante `somethingWillHappen2` y se establece un arrow function, dentro de esta se regresa una promesa, su estructura obliga a pasar como parametro `(resolve,reject)` resuelve o rechaza.
+
+2. Se hacen las validacion en el caso que sea verdadero imprime `True`, en el caso que sea falso `Whoop!`, pero en este ejercicio se establece un `setTimeout` que recibe como parametro una funcion y un tiempo, este tiempo se establece en 2 milisegundos que representan 2 segundos
+
+3. Por ultimo se llama a la funcion y con `.then` se captura la respuesta y se imprime por consola, si no la captura con `.then`, captura un error a traves de `catch`
+
+```
+const somethingWillHappen2 = () => {
+    return new Promise((resolve, reject) => {
+        if(true){
+            setTimeout(() => {
+                resolve('True');
+            }, 2000)
+        } else {
+            const error = new Error('Whoop!');
+            reject(error);
+        }
+    });
+}
+
+somethingWillHappen2()
+    .then(response => console.log(response))
+    .catch(err => console.error(err));
+```
+
+Ahora ubicados en el proyecto sobre la terminal ejecutar `npm run promise`
+
+![assets/16.png](assets/16.png)
+
+De esta forma resuelve y obtiene primero `Hey!` de la primer funcion y 2 segundos despues `True`
+
+si en la segunda funcion se configura con `false` esto es lo que va a aparecer al ejecutar `npm run promise`, lo cual es importante para hacer debugging porque el programa indica que es lo que esta pasando y porque esta saliendo el error
+
+![assets/17.png](assets/17.png)
+
+Promise trae consigo el metodo `all` que sirve para traer varias promesas encadenadas y retornar un arreglo con los resultados, este metodo recibe como parametro las dos promesas creadas en forma de array y luego se captura con `.then` la respuesta a traves de un arreglo de resultados y tambien se hace de la misma forma con `catch`
+
+```
+Promise.all([somethingWillHappen(), somethingWillHappen2()])
+    .then(response => {
+        console.log('Array of results', response);
+    })
+    .catch(err => {
+        console.error(err);
+    })
+```
+
+Configurar las dos funciones en `true` y ejecutar nuevamente con `npm run promise`
+
+![assets/18.png](assets/18.png)
