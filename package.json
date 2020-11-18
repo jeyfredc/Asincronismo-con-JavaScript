@@ -20,5 +20,8 @@
   "bugs": {
     "url": "https://github.com/jeyfredc/Asincronismo-con-JavaScript/issues"
   },
-  "homepage": "https://github.com/jeyfredc/Asincronismo-con-JavaScript#readme"
+  "homepage": "https://github.com/jeyfredc/Asincronismo-con-JavaScript#readme",
+  "dependencies": {
+    "xmlhttprequest": "^1.8.0"
+  }
 }

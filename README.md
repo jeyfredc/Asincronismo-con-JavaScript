@@ -6,7 +6,7 @@
 
 [Definición Estructura Callback](#Definición-Estructura-Callback)
 
-[]()
+[Peticiones a APIs usando Callbacks](#Peticiones-a-APIs-usando-Callbacks)
 
 []()
 
@@ -172,4 +172,110 @@ Nuevamente en la terminal ejecutar `npm run callback`
 
 ![assets/6.png](assets/6.png)
 
-Lo primero que pasa es la operacion que se habia realizado en un principio, en segundo lugar e ejecuta `console.log(new Date);` y por ultimo se ejecuta 3 segundos despues la fecha con la diferencia de 3 segundos
+Lo primero que pasa es que se imprime el primer callback que era la funcion `calc`, en segundo lugar se ejecuta la funcion date en el orden que lleva, imprime la fecha con la hora actual y 3 segundos despues como se establecio en el `setTimeout` nuevamente imprime la fecha con la llamada actual.
+
+## Peticiones a APIs usando Callbacks
+
+El reto es consumir la API de Rick And Morty y hacer una peticion para obtener los elementos que trae la API y despues consultar al primer personaje, despues consultar la dimension a la cual pertenece para esto en este [enlace](https://rickandmortyapi.com/api/character) esta la respuesta en formato **Json**.
+
+Ahora lo que se va a hacer es utilizar la herramienta Postman para lo cual se deja el [enlace](https://geeksencuarentena.com/linux/como-instalar-postman-en-el-escritorio-de-linux/) de como instalar la aplicacion, esta aplicacion va a servir para analizar de una mejor forma el llamado de la API.
+
+Despues de tener instalado Postman dar click sobre el boton + como aparece a continuacion 
+
+![assets/7.png](assets/7.png)
+
+y se va a desplegar esta ventana
+
+![assets/8.png](assets/8.png)
+
+en la parte donde esta GET pegar la url de la API que proporciona la informacion en formato **Json**
+
+![assets/9.png](assets/9.png)
+
+y dar click en el boton Send
+
+despues en la parte de abajo trae toda la informacion de la API en una forma mas ordenada y mejor presentada.
+
+Alli esta la informacion de cuantos elementos tiene, los resultados que serian los personajes de la API que se utilizaran para el proyecto
+
+![assets/10.png](assets/10.png)
+
+en los resultados no aparece la dimension del primer personaje, para poder revisar la dimension hay que hacer click sobre `"url": "https://rickandmortyapi.com/api/location/1"`, esto hace que se abra otra ventana y nuevamente hay que dar click sobre el boton **send**
+
+![assets/11.png](assets/11.png)
+
+Ahora lo que se va a hacer es crear el codigo necesario para hacer las peticiones y obtener los valores solicitados.
+
+1. La API general
+
+2. Primer personaje
+
+3. Llamar la ubicacion que en este caso es obtener el valor real de la dimension del origen del personaje
+
+en la carpeta **callback** del proyecto crear un archivo que se llame **challenge.js**
+
+Actualmente se esta trabajando con **Node Js**, es necesario instalar la dependencia **xmlhttprequest** la cual es un objeto que esta dentro de Js, el cual permite realizar peticiones hacia algun servicio en la nube, en este caso una URL, API, etc.
+
+Para instalar la dependencia hay que ubicar el proyecto en la terminal y ejecutar `npm install xmlhttprequest` y para instalarla como una dependencia de desarrollo se agrega `--save`
+
+![assets/12.png](assets/12.png)
+
+Despues de instalar la dependencia en el archivo **challenge.js** se debe instanciar esta dependencia de la siguiente forma 
+
+```
+let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+```
+
+Aqui se va a aprender a utilizar **xmlhttprequest**, no se utilizara fetch porque es una implementacion que esta disponible desde **ES6(Ecma Script 6)** en adelante, fetch por dentro utiliza **promises**, como en este momento se esta trabajando con **callbacks** se trabajara como se hacia con **ES5** para ir entendiendo cada una de las fases del asincronismo en Js.
+
+1. Crear una funcion que se llamara `fetchData` que permitira traer la informacion desde la API, la cual se le va a pasar un callback y luego desencadenar los llamados que se necesiten esta funcion recibe 2 parametros la url de la api y el callback.
+
+2. Se crea una variable para instancia XMLHttpRequest
+
+3. Despues de tener instanciada XMLHttpRequest con la variable ya se tiene acceso al metodo open el cual recibe como parametro, la peticion que se va a realizar que en este caso es `GET` para obtener la informacion de la url, la url de la api y el valor true que significa que se va a manejar de forma asincrona, por defecto esta en true y no es necesario colocarlo pero por convencion se deja con el estado en true
+
+4. Se genera el estado por el cual pasa la conexion a traves del metodo onreadystatechange, si el cambio sucede entonces se ejecuta una funcion que recibe un evento, despues vienen las validaciones para saber si se va a ejecutar el callback. La validacion que se va a realizar es si el estado en el cual se encuentra es satisfactorio. Existen diferentes estados los cuales se pueden consultar para ampliar mas la informacion en el siguiente [enlace](https://www.w3schools.com/xml/ajax_xmlhttprequest_response.asp).
+
+Son 5 estados:
+
+    1. Se ha inicializado pero aun no ha hecho open
+
+    2. Esta cargando y haciendo el proceso de llamado 
+
+    3. Ya esta cargado 
+
+    4. Si existe una descarga o informacion 
+
+    5. Se ha completado la peticion
+
+5. se usa la primer validacion a traves de `readyState` para validar el estado en el que se encuentra, son 5 estados pero se debe tener en cuenta que empieza desde el numero 0
+
+6. La segunda validacion es la que permite saber el `status` en la que se encuentra la peticion, si es 200 quiere decir que todo esta Ok
+
+7. El regreso del callback, donde su primer parametro es el error y el segundo el resultado que es la informacion que se desencadena, como la API viene en formato **JSON** se debe parsear para recibir una respuesta en texto, si no se pasa con `responseText` se va a mandar un string de texto que es un objeto y no permite iterar ni acceder a distintos valores 
+
+8. Se manda el `else` como buena practica en caso que la peticion no se este haciendo correctamente, se configura el Error indicando el error que traiga la api y luego se regresa al callback con el error que es el primer parametro que recibe el callbak y como segundo parametro null porque en este caso no se va a regresar ningun resultado
+
+9. Por ultimo se usa `xhttp.send();` para hacer el envio de la solicitud 
+
+```
+let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+function fetchData(url_api, callback) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url_api, true);
+    xhttp.onreadystatechange = function (event) {
+        if(xhttp.readyState === 4) {
+            if(xhttp.status === 200){
+                callback(null, JSON.parse(xhttp.responseText))
+            } else {
+                const error = new Error('Error ' + url_api);
+                return callback(error, null)
+            }
+        }
+    }
+    xhttp.send();
+}
+```
+
+Esta es la funcion que va a dar vida a las llamadas que se tienen que hacer con la API
