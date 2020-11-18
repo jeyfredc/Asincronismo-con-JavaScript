@@ -2,9 +2,9 @@
 
 [Introducción al asincronismo](#Introducción-al-asincronismo)
 
-[]()
+[Presentación del reto](#Presentación-del-reto)
 
-[]()
+[Definición Estructura Callback](#Definición-Estructura-Callback)
 
 []()
 
@@ -95,3 +95,81 @@ Consumir la API de Rick And Morty la cual contiene todos los personajes de la se
 3. Obtener la dimension a la cual pertenece el personaje en un tercer llamado.
 
 La API se va a utilizar 3 veces en cada uno de los ejercicios utilizando **(CallBacks, Promises, Async Await)**, para esto es necesario entender como funciona la API y en este [enlace](https://rickandmortyapi.com/documentation) se encuentra toda la documentacion, donde se explica como esta constituida la API, cuales son los principales elementos a obtener y cuales son las caracteristicas que tiene (personajes, locacion, episodios), etc.
+
+## Definición Estructura Callback
+
+El **Callback** es una funcion que al crearla se le pasa como parametro una segunda funcion y de esta forma al momento de hacer una peticion o un llamado asincrono esta se ejecuta despues del llamado.
+
+Abrir la terminal y ubicar la carpeta donde se esten realizando los proyectos.
+
+Se inicializa el proyecto con `npm init` que permite establecer que es el proyecto y de que se va a trabajar con el 
+
+![assets/3.png](assets/3.png)
+
+Ahora en la carpeta del curso crear la carpeta **src**, dentro de esta crear una subcarpeta que se llame **callback** y luego dentro de esta crear un nuevo archivo que se llame **index.js**.
+
+Lo primero que se va a hacer es crear una funcion y esta funcion se le va a pasar por parametro una segunda funcion la cual va a ejecutar codigo.
+
+1. Se crea una funcion suma que recibe 2 parametros el cual es el numero 1 y el numero 2. La funcion como resultado regresa la suma de los 2 numeros.
+
+2. Se crea la segunda funcion que recibe los parametros de la funcion 1 y un tercer parametro llamado callback (por convencion se coloca la palabra callback para identificar que es un callback). La funcion retorna al callback con los argumentos de la primer funcion
+
+3. se imprime a traves de un `console.log` los parametros que recibe la funcion `calc` y se hace el llamado de la funcion 1 por parametro junto con sus parametros.
+
+Teniendo en cuenta esto, si existiera una funcion resta, se podria ejecutar en forma de pila, primero la suma, luego la resta, etc.
+
+```
+function sum(num1, num2) {
+    return num1 + num2;
+}
+
+function calc(num1, num2, callback) {
+    return callback(num1,num2);
+}
+
+console.log(calc(5, 8, sum));
+```
+
+Antes de ejecutar este bloque de codigo, una buena practica es generar los scripts que permitiran ejecutar el programa de forma correcta.
+
+abrir el archivo **package.json** y borrar la siguiente linea de codigo `"test": "echo \"Error: no test specified\" && exit 1"` reemplazar por lo siguiente `"callback": "node src/callback/index.js"`
+
+![assets/4.png](assets/4.png)
+
+Ahora abrir la terminal sobre la ubicacion del proyecto y ejecutar 
+
+`npm run callback`
+
+y en la terminal aparecera el resultado del programa
+
+![assets/5.png](assets/5.png)
+
+A continuacion abrir nuevamente el archivo **index.js** para seguir trabajando con ejemplos pero con tiempos y esta vez el ejemplo sera con fechas como se muestra a continuacion 
+
+1. Se crea la function date que recibe como argumento un callback, despues imprime a traves de console.log la fecha actual es decir hoy, despues se establece un setTimeout para que exista una ejecucion del callback de 3 segundos.
+
+2. Se crea la funcion PrintDate que pasa como parametro el nombre del callback y a traves de console.log imprime el callback
+
+3. se llama a la funcion date con el nombre del callback
+
+```
+function date(callback) {
+    console.log(new Date);
+    setTimeout(function () {
+        let date = new Date;
+        callback(date);
+    }, 3000)
+}
+
+function printDate(dateNow) {
+    console.log(dateNow);
+}
+
+date(printDate);
+```
+
+Nuevamente en la terminal ejecutar `npm run callback`
+
+![assets/6.png](assets/6.png)
+
+Lo primero que pasa es la operacion que se habia realizado en un principio, en segundo lugar e ejecuta `console.log(new Date);` y por ultimo se ejecuta 3 segundos despues la fecha con la diferencia de 3 segundos

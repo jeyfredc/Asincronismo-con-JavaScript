@@ -1,0 +1,24 @@
+{
+  "name": "asincronismo-con-javascript",
+  "version": "1.0.0",
+  "description": "Trabajar con asincronismo en Js",
+  "main": "src/index.js",
+  "scripts": {
+    "callback": "node src/callback/index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/jeyfredc/Asincronismo-con-JavaScript.git"
+  },
+  "keywords": [
+    "callbacks",
+    "promises",
+    "async"
+  ],
+  "author": "Jeyfred Calderon",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/jeyfredc/Asincronismo-con-JavaScript/issues"
+  },
+  "homepage": "https://github.com/jeyfredc/Asincronismo-con-JavaScript#readme"
+}
