@@ -12,7 +12,7 @@
 
 [Implementando Promesas](#Implementando-Promesas)
 
-[]()
+[Resolver problema con Promesas](#Resolver-problema-con-Promesas)
 
 []()
 
@@ -470,3 +470,128 @@ Promise.all([somethingWillHappen(), somethingWillHappen2()])
 Configurar las dos funciones en `true` y ejecutar nuevamente con `npm run promise`
 
 ![assets/18.png](assets/18.png)
+
+## Resolver problema con Promesas
+
+Ahora es momento de resolver el reto de la API de Rick And Morty con las promesas.
+
+En la carpeta **promise** crear un archivo llamado **challenge.js**.
+
+En la carpeta **src** crear una subcarpeta llamada **utils** y dentro de esta crear el archivo llamado **fetchData.js** alli se va a utilizar un pedazo de codigo que viene del **src/callback/challenge.js** que es este
+
+```
+let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+let API = 'https://rickandmortyapi.com/api/character/';
+
+function fetchData(url_api, callback) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url_api, true);
+    xhttp.onreadystatechange = function (event) {
+        if(xhttp.readyState === 4) {
+            if(xhttp.status === 200){
+                callback(null, JSON.parse(xhttp.responseText))
+            } else {
+                const error = new Error('Error ' + url_api);
+                return callback(error, null)
+            }
+        }
+    }
+    xhttp.send();
+}
+
+```
+
+Este archivo se va a transformar al nuevo estandar que proporciona ES6, pero no se van a utilizar los callbacks, se elimina la variable API `let API = 'https://rickandmortyapi.com/api/character/';` 
+
+otros valores se convierten en arrow function y todo lo que esta con `let` pasa a `const`
+
+1. Se instancia el objeto XMLHttpRequest
+
+2. se crea una constante llamada fetchData, se pasa por parametro la url de API y se crea un arrow function que recibe una promesa, esta lleva 2 parametros obligatorios que son responde y request
+
+3. se intancia el objeto xhttp para acceder al metodo open el cual lleva por parametro la peticion de tipo GET, la url de la API y el valor por defecto true
+
+4. se accede al metodo onreadystatechange para verificar cada uno de los estados, los cuales son 5
+
+5. a traves de un if ternario se resuelve la peticion parseando el objeto que viene en formato **JSON** o de lo contrario se rechaza con un la configuracion del Error
+
+6. Se envia al objeto para realizar la peticion
+
+7. Se exporta la funcion fetchData para poderla utilizar en otros modulos
+
+```
+const XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+
+const fetchData = (url_api) => {
+    return new Promise((resolve, reject) => {
+        const xhttp = new XMLHttpRequest();
+        xhttp.open('GET', url_api, true);
+        xhttp.onreadystatechange = (() => {
+            if(xhttp.readyState === 4) {
+                (xhttp.status === 200)
+                ? resolve(JSON.parse(xhttp.responseText))
+                : reject(new Error('Error', url_api))
+            }
+        });
+        xhttp.send();
+    });
+
+}
+
+module.exports = fetchData;
+```
+
+Ahora dentro del archivo **challenge.js** ubicado en **src/promise/challenge.js** se importa `fetchData`
+
+1. se importa fetchData para tenerla disponible dentro del archivo
+
+2. Se crea la constante API que tiene el valor de la url de la API
+
+3. Se inicializa la funcion pasando como parametro la url de la API y con `.then` se empiezan a capturar los datos que se requieren. se hace un `console.log` de la informacion que se quiere traer y luego se retorna una nueva peticion usando templates literals **``** y asi con cada informacion que se requiere obtener
+
+4. Se captura el error con **catch** en caso que llegue a ocurrir algun error 
+
+```
+const fetchData = require('../utils/fetchData');
+
+const API = 'https://rickandmortyapi.com/api/character/';
+
+fetchData(API)
+    .then(data => {
+        console.log(data.info.count);
+        return fetchData(`${API}${data.results[0].id}`)
+    })
+    .then(data => {
+        console.log(data.name);
+        return fetchData(data.origin.url)
+    })
+    .then(data => {
+        console.log(data.dimension)
+    })
+    .catch(err => console.error(err));
+```
+
+Para ejecutar el programa nuevamente en el archivo **package.json** se debe crear un nuevo script `"promise:challenge": "node src/promise/challenge.js"`
+
+Los scripts quedan asi 
+
+```
+  "scripts": {
+    "callback": "node src/callback/index.js",
+    "callback:challenge": "node src/callback/challenge.js",
+    "promise": "node src/promise/index.js",
+    "promise:challenge": "node src/promise/challenge.js"
+  },
+```
+
+Pasar a la ubicacion del proyecto en la terminal y ejecutar `npm run promise:challenge`
+
+![assets/19.png](assets/19.png)
+
+y de esta forma nuevamente se obtienen los resultados solicitados en el reto
+
+- Numero de personajes
+
+- Nombre del primer personaje
+
+- Dimension del primer personaje
