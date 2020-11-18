@@ -362,7 +362,7 @@ De esta forma trae que la API tiene
 - Primer personaje es Rick Sanchez
 - La dimension de Rick Sanchez es C-137
 
-Una recomendacion importante es evitar caer en un callback hell, lo cual es una anidacion de if tras anidacion tras anidacion 
+Una recomendacion importante es evitar caer en un callback hell, lo cual es una anidacion de callbacks tras anidacion tras anidacion 
 
 ![assets/14.png](assets/14.png)
 
