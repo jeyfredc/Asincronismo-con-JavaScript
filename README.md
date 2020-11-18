@@ -8,7 +8,7 @@
 
 [Peticiones a APIs usando Callbacks](#Peticiones-a-APIs-usando-Callbacks)
 
-[]()
+[Múltiples Peticiones a un API con Callbacks](#Múltiples-Peticiones-a-un-API-con-Callbacks)
 
 []()
 
@@ -279,3 +279,91 @@ function fetchData(url_api, callback) {
 ```
 
 Esta es la funcion que va a dar vida a las llamadas que se tienen que hacer con la API
+
+## Múltiples Peticiones a un API con Callbacks
+
+Ahora hay que hacer el llamado a la funcion fetchData para poder hacer las peticiones a la API
+
+Para esto debajo de donde se instancia `XMLHttpRequest` se crea una variable para guardar la url de la API `let API = 'https://rickandmortyapi.com/api/character/';`
+
+1. se llama a la funcion `fetchData` que recibe como primer parametro la API, y como segundo parametro el callback que recibe como parametros un error y un resultado.
+
+2. Se hace la validacion del error1 para el primer llamado de la API donde obtiene la identidad del primer personaje a traves de fetchData, recibe la url de la API y obtiene el resultado del primer id, luego se configura el segundo callback para obtener los datos del nombre del primer personaje y repite el mismo proceso a traves de los atributos que se debe saber de donde se obtienen analizando la informacion que brinda la aplicacion Postman y se hace el tercer llamado para obtener la dimension del personaje
+
+3. Se imprimen cada uno de los valores solicitados a traves de un console.log
+
+```
+fetchData(API, function(error1, data1) {
+    if(error1) return console.error(error1);
+    fetchData(API + data1.results[0].id, function(error2, data2) {
+        if(error2) return console.error(error2);
+        fetchData(data2.origin.url, function(error3, data3) {
+            if(error3) return console.error(error3);
+            console.log(data1.info);
+            console.log(data2.name);
+            console.log(data3.dimension);
+        });
+    });
+});
+```
+
+El codigo en el archivo **challenge.js** finalmente queda asi 
+
+```
+let XMLHttpRequest = require('xmlhttprequest').XMLHttpRequest;
+let API = 'https://rickandmortyapi.com/api/character/';
+
+function fetchData(url_api, callback) {
+    let xhttp = new XMLHttpRequest();
+    xhttp.open('GET', url_api, true);
+    xhttp.onreadystatechange = function (event) {
+        if(xhttp.readyState === 4) {
+            if(xhttp.status === 200){
+                callback(null, JSON.parse(xhttp.responseText))
+            } else {
+                const error = new Error('Error ' + url_api);
+                return callback(error, null)
+            }
+        }
+    }
+    xhttp.send();
+}
+
+fetchData(API, function(error1, data1) {
+    if(error1) return console.error(error1);
+    fetchData(API + data1.results[0].id, function(error2, data2) {
+        if(error2) return console.error(error2);
+        fetchData(data2.origin.url, function(error3, data3) {
+            if(error3) return console.error(error3);
+            console.log(data1.info.count);
+            console.log(data2.name);
+            console.log(data3.dimension);
+        });
+    });
+});
+```
+
+Antes de ejecutar abrir el archivo **package.json** y añadir un nuevo **script** que es el siguiente `"callback:challenge": "node src/callback/challenge.js"` los scripts quedan de esta forma, no olvidar colocar la coma **,** al final del primer callback
+
+```
+  "scripts": {
+    "callback": "node src/callback/index.js",
+    "callback:challenge": "node src/callback/challenge.js"
+  },
+```
+
+Ahora ubicados en el proyecto sobre la terminal ejecutar `npm run callback:challenge`
+
+![assets/13.png](assets/13.png)
+
+De esta forma trae que la API tiene
+
+- 671 personajes
+- Primer personaje es Rick Sanchez
+- La dimension de Rick Sanchez es C-137
+
+Una recomendacion importante es evitar caer en un callback hell, lo cual es una anidacion de if tras anidacion tras anidacion 
+
+![assets/14.png](assets/14.png)
+
+Lo mejor que se puede hacer es tener un maximo de 3 callback y en caso de que se requiera hacer anidacion de mas callback analizar muy bien la situacion ya que no es una buena practica 
