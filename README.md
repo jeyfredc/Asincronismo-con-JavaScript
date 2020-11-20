@@ -14,7 +14,7 @@
 
 [Resolver problema con Promesas](#Resolver-problema-con-Promesas)
 
-[]()
+[Conociendo Async/await](#Conociendo-Async/await)
 
 []()
 
@@ -595,3 +595,75 @@ y de esta forma nuevamente se obtienen los resultados solicitados en el reto
 - Nombre del primer personaje
 
 - Dimension del primer personaje
+
+## Conociendo Async/await
+
+Async await es un nuevo enfoque que hace mejor la sintaxis sobre las promesas y hace que el codigo se comporte como sincrono.
+
+En la carpeta **src** crear una subcarpeta que se llame **async** y dentro de esta crear un archivo llamado **index.js**
+
+1. Se crea una constante la cual se nombra como `doSomenthingAsync`, despues se crea un arrow function, dentro de esta se crea la promesa que obliga pasar 2 parametros que son `resolve` y `reject`, a continuacion se hace la validacion estableciendo un `setTimeout` con un if ternario, en caso de que resuelva 3 segundos despues de ejecutar la funcion saldra `'Do Something Async'`, en caso que rechaze `'Test Error'`
+
+2. se crea una constante que llame la palabra reservada `async` y se crea un arrow function, se crea otra constante `something` que llama la palabra reservada `await` e invoca la funcion `doSomenthingAsync()`
+
+3. Se pasa la variable a traves de un `console.log`
+
+4. Se imprime Before, luego se imprime After y por ultimo se ejecuta la funcion despues de 3 segundos
+
+```
+const doSomenthingAsync = () => {
+    return new Promise((resolve, reject) => {
+        (true)
+            ? setTimeout(() => resolve('Do Something Async'), 3000)
+            : reject(new Error ('Test Error'))
+    });
+}
+
+
+const doSomenthing = async () => {
+    const something = await doSomenthingAsync();
+    console.log(something);
+}
+
+console.log('Before');
+doSomenthing();
+console.log('After');
+```
+
+Ubicar el archivo **package.json** para crear el script `"async": "node src/async/index.js"`, los scripts quedan de la siguiente forma
+
+```
+  "scripts": {
+    "callback": "node src/callback/index.js",
+    "callback:challenge": "node src/callback/challenge.js",
+    "promise": "node src/promise/index.js",
+    "promise:challenge": "node src/promise/challenge.js",
+    "async": "node src/async/index.js"
+  },
+```
+
+por ultimo ubicar el poyecto en la terminal y ejecutar `npm run async`
+
+![assets/20.png](assets/20.png)
+
+Ahora se va a realizar otra funcion para ver la ejecucion de los errores con **Async await** pero realizando capturas a traves de `try` y `catch` reduciendo el codigo en menos lineas
+
+```
+const anotherFunction = async () => {
+    try {
+        const something = await doSomenthingAsync();
+    } catch (error) {
+        console.error(error)
+    }
+}
+
+console.log('Before1');
+anotherFunction();
+console.log('After1');
+```
+
+Nuevamente ejecutar `npm run async`
+
+![assets/21.png](assets/21.png)
+
+Aca se ve que se ejecutan las 2 funciones pero ocurre primero `doSomenthingAsync()` y despues `anotherFunction()`
