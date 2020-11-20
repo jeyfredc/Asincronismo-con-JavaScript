@@ -16,7 +16,7 @@
 
 [Conociendo Async/await](#Conociendo-Async/await)
 
-[]()
+[Resolver problema con Async/Await](#Resolver-problema-con-Async/Await)
 
 []()
 
@@ -667,3 +667,63 @@ Nuevamente ejecutar `npm run async`
 ![assets/21.png](assets/21.png)
 
 Aca se ve que se ejecutan las 2 funciones pero ocurre primero `doSomenthingAsync()` y despues `anotherFunction()`
+
+## Resolver problema con Async/Await
+
+Ahora es momento de resolver el reto de la API de Rick And Morty con Async/Await.
+
+En la carpeta **async** crear un archivo llamado **challenge.js**.
+
+1. Importar la funcion fetchData
+
+2. Crear la constante API que lleva la url de la API
+
+3. Crear la funcion con Async await utilizando try y catch, como la url se pasa por parametro de async debe ser utilizada al llamar a data para poder obtener el resultado de la url
+
+4. Obtener los valores a traves de los atributos que previamente se obtienen con postman
+
+5. Imprimir cada una de la informacion de las constantes que se piden 
+
+6. capturar el error a traves de catch
+
+7. Hacer el llamado de la funcion
+
+```
+const fetchData = require('../utils/fetchData');
+const API = 'https://rickandmortyapi.com/api/character/';
+
+const anotherFunction = async (url_api) => {
+    try {
+        const data = await fetchData(url_api);
+        const character = await fetchData(`${API}${data.results[0].id}`);
+        const origin = await fetchData(character.origin.url);
+
+        console.log(data.info.count);
+        console.log(character.name);
+        console.log(origin.dimension);
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+console.log('Before');
+anotherFunction(API);
+console.log('After');
+```
+
+Antes de ejecutar abrir el archivo **package.json** y crear un nuevo script `"Async:challenge": "node src/async/challenge.js"`, los scripts quedan de esta forma
+
+```
+  "scripts": {
+    "callback": "node src/callback/index.js",
+    "callback:challenge": "node src/callback/challenge.js",
+    "promise": "node src/promise/index.js",
+    "promise:challenge": "node src/promise/challenge.js",
+    "async": "node src/async/index.js",
+    "async:challenge": "node src/async/challenge.js"
+  },
+```
+
+Ahora ubicados en el proyecto sobre la terminal ejecutar `npm run async:challenge`
+
+![assets/22.png](assets/22.png)
