@@ -1,5 +1,7 @@
 # Asincronismo-con-JavaScript
 
+## Tabla de Contenido
+
 [Introducción al asincronismo](#Introducción-al-asincronismo)
 
 [Presentación del reto](#Presentación-del-reto)
@@ -74,6 +76,10 @@ Las funciones que estan en **Call Stack** hacen un llamado a un **setTimeOut** o
 
 El **EventLoop** se encarga de preguntar si la pila de ejecucion o **Call Stack** esta vacia para luego resolver la funcion que estaba puesta en **CallBack** y luego pasa a ejecutarla y de esta forma es como continua el funcionamiento del asincronismo en JavaScript.
 
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
+
 ## Presentación del reto
 
 Utilizar las principales estructuras que utiliza Js para trabajar con el asincronismo **(CallBacks, Promises, Async Await)**.
@@ -89,6 +95,10 @@ Consumir la API de Rick And Morty la cual contiene todos los personajes de la se
 3. Obtener la dimension a la cual pertenece el personaje en un tercer llamado.
 
 La API se va a utilizar 3 veces en cada uno de los ejercicios utilizando **(CallBacks, Promises, Async Await)**, para esto es necesario entender como funciona la API y en este [enlace](https://rickandmortyapi.com/documentation) se encuentra toda la documentacion, donde se explica como esta constituida la API, cuales son los principales elementos a obtener y cuales son las caracteristicas que tiene (personajes, locacion, episodios), etc.
+
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
 
 ## Definición Estructura Callback
 
@@ -167,6 +177,10 @@ Nuevamente en la terminal ejecutar `npm run callback`
 ![assets/6.png](assets/6.png)
 
 Lo primero que pasa es que se imprime el primer callback que era la funcion `calc`, en segundo lugar se ejecuta la funcion date en el orden que lleva, imprime la fecha con la hora actual y 3 segundos despues como se establecio en el `setTimeout` nuevamente imprime la fecha con la llamada actual.
+
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
 
 ## Peticiones a APIs usando Callbacks
 
@@ -274,6 +288,10 @@ function fetchData(url_api, callback) {
 
 Esta es la funcion que va a dar vida a las llamadas que se tienen que hacer con la API
 
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
+
 ## Múltiples Peticiones a un API con Callbacks
 
 Ahora hay que hacer el llamado a la funcion fetchData para poder hacer las peticiones a la API
@@ -361,6 +379,10 @@ Una recomendacion importante es evitar caer en un callback hell, lo cual es una 
 ![assets/14.png](assets/14.png)
 
 Lo mejor que se puede hacer es tener un maximo de 3 callback y en caso de que se requiera hacer anidacion de mas callback analizar muy bien la situacion ya que no es una buena practica 
+
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
 
 ## Implementando Promesas
 
@@ -464,6 +486,10 @@ Promise.all([somethingWillHappen(), somethingWillHappen2()])
 Configurar las dos funciones en `true` y ejecutar nuevamente con `npm run promise`
 
 ![assets/18.png](assets/18.png)
+
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
 
 ## Resolver problema con Promesas
 
@@ -590,6 +616,10 @@ y de esta forma nuevamente se obtienen los resultados solicitados en el reto
 
 - Dimension del primer personaje
 
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
+
 ## Conociendo Async/await
 
 Async await es un nuevo enfoque que hace mejor la sintaxis sobre las promesas y hace que el codigo se comporte como sincrono.
@@ -662,6 +692,10 @@ Nuevamente ejecutar `npm run async`
 
 Aca se ve que se ejecutan las 2 funciones pero ocurre primero `doSomenthingAsync()` y despues `anotherFunction()`
 
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
+
 ## Resolver problema con Async/Await
 
 Ahora es momento de resolver el reto de la API de Rick And Morty con Async/Await.
@@ -730,6 +764,10 @@ y de esta forma nuevamente se obtienen los resultados solicitados en el reto
 
 - Dimension del primer personaje
 
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
+
 ## Callbacks Vs Promesas Vs Async/Await
 
 **Callbacks**
@@ -777,3 +815,7 @@ y de esta forma nuevamente se obtienen los resultados solicitados en el reto
 - Contol sobre el programa de poder indicar cuando sucede algo
 
 - Requiere un polyfile para ser transpilados y ser interpretados en todos los navegadores //Babbel
+
+<div align="right">
+  <small><a href="#tabla-de-contenido">🡡 volver al inicio</a></small>
+</div>
