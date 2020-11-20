@@ -18,6 +18,8 @@
 
 [Resolver problema con Async/Await](#Resolver-problema-con-Async/Await)
 
+[Callbacks Vs Promesas Vs Async/Await](#Callbacks-Vs-Promesas-Vs-Async/Await)
+
 ## Introducción al asincronismo
 
 JavaScript es un lenguaje de programacion asincrono y no bloqueante con un manejador de eventos conocido como **EventLoop** implementado en un unico hilo(thread) para sus interfaces de entrada y salida
@@ -727,3 +729,51 @@ y de esta forma nuevamente se obtienen los resultados solicitados en el reto
 - Nombre del primer personaje
 
 - Dimension del primer personaje
+
+## Callbacks Vs Promesas Vs Async/Await
+
+**Callbacks**
+
+**Ventajas**
+
+- Es una función que recibe otra función
+
+- Son universales
+
+**Desventajas**
+
+- Composición tosca
+
+- Callback Hell
+
+- Flujo poco intuitivo
+
+- Debemos pensar que estamos haciendo código para humanos y debe ser facil de leer
+
+- Los callback anidados se vuelven complejos de leer y mantener
+
+**Promise**
+
+**Ventajas**
+
+- Fácilmente enlazable con `then` y `return`
+
+-  Es poderoso y muy recomendado para desarrolladores
+
+**Desventajas**
+
+- No maneja excepciones si no maneja un catch al final y seremos propensos a errores
+
+- Requiere un polyfile para ser transpilados y ser interpretados en todos los navegadores //Babbel
+
+**Async Await**
+
+**Ventajas**
+
+- El tradicional try - catch y manejar las excepciones de manera mas fluida
+
+- Mas fáciles de leer lo que va a suceder
+
+- Contol sobre el programa de poder indicar cuando sucede algo
+
+- Requiere un polyfile para ser transpilados y ser interpretados en todos los navegadores //Babbel
