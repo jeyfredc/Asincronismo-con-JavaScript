@@ -18,14 +18,6 @@
 
 [Resolver problema con Async/Await](#Resolver-problema-con-Async/Await)
 
-[]()
-
-[]()
-
-[]()
-
-[]()
-
 ## Introducción al asincronismo
 
 JavaScript es un lenguaje de programacion asincrono y no bloqueante con un manejador de eventos conocido como **EventLoop** implementado en un unico hilo(thread) para sus interfaces de entrada y salida
@@ -727,3 +719,11 @@ Antes de ejecutar abrir el archivo **package.json** y crear un nuevo script `"As
 Ahora ubicados en el proyecto sobre la terminal ejecutar `npm run async:challenge`
 
 ![assets/22.png](assets/22.png)
+
+y de esta forma nuevamente se obtienen los resultados solicitados en el reto
+
+- Numero de personajes
+
+- Nombre del primer personaje
+
+- Dimension del primer personaje
